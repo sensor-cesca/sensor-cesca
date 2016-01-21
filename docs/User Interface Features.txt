@@ -1,0 +1,20 @@
+Device Registration
+- As a User I would like to see a list of registred devices so I can know who can see my sensors
+- As a User I would like to modify device description so I can better identify it
+- As a User I would like to authorize a device so it can connect to central
+- As a User I would like to block and unblock devices so I can control who can see my sensors
+
+Temperature and Humidity Registration
+- As a Device I would like to send information about my sensors to the central so this information can be available for the users
+- As a Device I would like to send health information about myself to the central so this information can help to identify when I'm having problems
+
+Data visualization
+- As a User I would like to see latest information in my laptop browser about my sensors so I can make decisions based on it
+- As a User I would like to see latest information in my smartphone browser about my sensors so I can make decisions based on it
+- As a User I would like to have an app to show me latest information about my sensors so I can make decisions based on it
+- As a User I would like to see a chart with data history of my sensors so I can make decisions based on it
+
+Device Configuration
+- As a User I would like to define a device configuration so it can load this configuration
+- As a Device I would like to load a configuration from central so I can behave as expected
+

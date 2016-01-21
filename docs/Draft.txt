@@ -1,0 +1,38 @@
+Hardware:
+- Arduino UNO 
+- Wifi Shield
+- DHT22 (temperature and humidity sensor)
+- LED (to indicate sync)
+- Project: http://www.instructables.com/id/Temperature-and-Humidity-Datalogger-Webserver/
+
+
+-- Data Model --
+
+Device:
+- ID
+- Name
+- Location
+- Note
+- Refresh Rate Seconds
+- Type
+
+
+DeviceType:
+- ID
+- Description
+
+
+Type:
+- ID
+- Capabilities
+
+
+
+
+
+
+
+
+
+
+http://www.openweathermap.com/

@@ -1,0 +1,16 @@
+Current HW:
+- HP Mini (40 GB SSD + 2 GB RAM)
+
+Software Installation:
+- Install CentOS 6.7 (32 bits) - Minimal ISO - Minimal Installation
+- Run all updates
+- Configure Wifi Driver (https://wiki.centos.org/HowTos/Laptops/Wireless/Broadcom)
+- Installed DB
+	- MySQL client programs and shared libraries
+	- Official JDBC driver for MySQL
+	- The MySQL server and related files
+- Add user to sudoers (https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos)
+- Installed OpenJDK Development Environment java-1.7.0
+- Installed Chromium
+	wget http://people.centos.org/hughesjr/chromium/6/i386/RPMS/chromium-browser-38.0.2125.111-1.el6.centos.i686.rpm
+	yum localinstall chromium-browser-38.0.2125.111-1.el6.centos.i686.rpm
