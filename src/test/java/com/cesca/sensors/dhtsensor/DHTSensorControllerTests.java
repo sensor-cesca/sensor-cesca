@@ -43,11 +43,23 @@ public class DHTSensorControllerTests {
 	}
 
 	@Test
-	public void contextLoads() {
+	public void get_latest_dht_sensor_data() {
 		DHTSensor dht = this.dhtSensorController.getLatestData();
 		assertEquals(1497013934978l, dht.getCollectionTimestamp());
 		assertEquals(68.2f, dht.getHumidity(), 0.1);
 		assertEquals(22.8f, dht.getTemperature(), 0.1);
+	}
+	
+	@Test
+	public void add_dht_sensor_data() {
+		long collectionTimestamp = System.currentTimeMillis();
+		DHTSensor dht = new DHTSensor(collectionTimestamp, 75.3f, 18.7f);
+		this.dhtSensorController.addData(dht);
+		
+		DHTSensor retrievedDHT = this.dhtSensorController.getLatestData();
+		assertEquals(collectionTimestamp, retrievedDHT.getCollectionTimestamp());
+		assertEquals(75.3f, retrievedDHT.getHumidity(), 0.1);
+		assertEquals(18.7f, retrievedDHT.getTemperature(), 0.1);		
 	}
 
 }

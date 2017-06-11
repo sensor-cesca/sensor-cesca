@@ -6,4 +6,6 @@ public interface DHTSensorDAO {
 
 	DHTSensor getLatestData();
 
+	DHTSensor addDHTSensorData(DHTSensor dht);
+
 }

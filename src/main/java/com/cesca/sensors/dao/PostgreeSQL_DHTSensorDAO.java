@@ -2,6 +2,7 @@ package com.cesca.sensors.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -28,7 +29,6 @@ public class PostgreeSQL_DHTSensorDAO implements DHTSensorDAO {
 			dht.setTemperature(rs.getFloat("temperature"));
 			return dht;
 		}
-
 	}
 
 	@Override
@@ -39,6 +39,21 @@ public class PostgreeSQL_DHTSensorDAO implements DHTSensorDAO {
 		sql.append("LIMIT 1");
 
 		return this.jdbcTemplate.queryForObject(sql.toString(), new DHTSensorRowMapper());
+	}
+
+	@Override
+	public DHTSensor addDHTSensorData(DHTSensor dht) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO dht_sensor (collection_timestamp, humidity, temperature) ");
+		sql.append("VALUES (?, ?, ?) ");
+		
+		Timestamp collectionTimestamp = new Timestamp(dht.getCollectionTimestamp());
+		float humidity = dht.getHumidity();
+		float temperature = dht.getTemperature();
+		
+		this.jdbcTemplate.update(sql.toString(), new Object [] { collectionTimestamp, humidity, temperature });
+		
+		return dht;
 	}
 
 }

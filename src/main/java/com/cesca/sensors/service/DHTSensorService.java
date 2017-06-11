@@ -15,5 +15,9 @@ public class DHTSensorService {
 	public DHTSensor getLatestData() {
 		return this.dhtSensorDAO.getLatestData();
 	}
+	
+	public DHTSensor addDHTSensorData(DHTSensor dht){
+		return this.dhtSensorDAO.addDHTSensorData(dht);
+	}
 
 }

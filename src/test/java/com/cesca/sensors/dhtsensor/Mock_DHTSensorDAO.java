@@ -21,4 +21,10 @@ public class Mock_DHTSensorDAO implements DHTSensorDAO {
 		}
 		return latestDHT;
 	}
+
+	@Override
+	public DHTSensor addDHTSensorData(DHTSensor dht) {
+		this.dhtSensorList.add(dht);
+		return dht;
+	}
 }

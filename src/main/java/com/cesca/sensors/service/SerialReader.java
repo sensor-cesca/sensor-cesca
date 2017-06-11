@@ -1,10 +1,10 @@
-package dhtSensorReader;
+package com.cesca.sensors.service;
 
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.log4j.Logger;
 
-import com.cesca.arduino.DHTSensor.*;
+import com.cesca.sensors.entity.DHTSensor;
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
@@ -61,15 +61,15 @@ public class SerialReader implements SerialPortEventListener {
 				log.debug("Value to register: " + this.output);
 				if (!this.output.contains("null")) {
 					log.debug("Create DHTSensor object");
-					Date timestamp = Calendar.getInstance().getTime();
+					long timestamp = System.currentTimeMillis();
 					String sensorOutput = lines[0];
 					try {
-						double humidity = Double.parseDouble(sensorOutput.split(" ")[0]);
-						double temperature = Double.parseDouble(sensorOutput.split(" ")[1]);
+						float humidity = Float.parseFloat(sensorOutput.split(" ")[0]);
+						float temperature = Float.parseFloat(sensorOutput.split(" ")[1]);
 						DHTSensor dht = new DHTSensor(timestamp, humidity, temperature);
 						log.debug(dht.toString());
-						DHTSensorDAO dao = new DHTSensorDAOImpl();
-						dao.insert(dht);						
+						//DHTSensorDAO dao = new DHTSensorDAOImpl();
+						//dao.insert(dht);						
 					} catch (Exception ex) {
 						log.debug(ex.toString());
 					}
