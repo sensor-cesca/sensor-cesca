@@ -47,15 +47,15 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 				this.output += serialOutput;
 
 				String[] lines = output.split("\n\r");
-
 				String lineToBeProcessed = null;
 
 				for (String line : lines) {
-
-					log.info(line.length());
-					if (line.length() == 11) {
-						lineToBeProcessed = line;
-					}
+					String[] values = line.split(" ");
+					if ( (line.length() == 11) && (values.length == 2)) {
+						if (values[0].length() == values[1].length()) {
+							lineToBeProcessed = line;
+						}
+					}						
 				}
 
 				if (lineToBeProcessed != null) {
@@ -80,10 +80,12 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 		long collectedTimeStamp = System.currentTimeMillis();
 		float humidity = Float.parseFloat(values[0] + "f");
 		float temperature = Float.parseFloat(values[1] + "f");
+		
+		if ( (humidity < 100) && (temperature < 100) ){
+			DHTSensor dht = new DHTSensor(collectedTimeStamp, humidity, temperature);
 
-		DHTSensor dht = new DHTSensor(collectedTimeStamp, humidity, temperature);
-
-		this.dhtSensorService.addDHTSensorData(dht);
+			this.dhtSensorService.addDHTSensorData(dht);			
+		}
 
 		this.output = "";
 	}
