@@ -19,5 +19,30 @@ public class DHTSensorService {
 	public DHTSensor addDHTSensorData(DHTSensor dht){
 		return this.dhtSensorDAO.addDHTSensorData(dht);
 	}
+	
+	public String lastestAsHTML(){
+		
+		DHTSensor dht = this.getLatestData();
+		
+		StringBuilder html = new StringBuilder();
+		html.append("<html>");
+		html.append("<head>");
+		
+		html.append("<meta http-equiv=\"refresh\" content=\"5\"/>");
+		
+		html.append("<title>Sensors</title>");
+		
+		
+		html.append("</head>");
+		
+		html.append("<body style=\"color: #FFFFFF; background-color: #000000;\">");
+		html.append("<div align=\"center\" style=\"font-size:96pt\">" + dht.getTemperature() + "&nbsp;&#8451</div>");
+		html.append("<div align=\"center\" style=\"font-size:96pt\">" + dht.getHumidity() + "&nbsp;%</div>");
+		
+		
+		
+		html.append("</body></html>");
+		return html.toString();
+	}
 
 }

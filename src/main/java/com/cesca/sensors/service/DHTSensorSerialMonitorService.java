@@ -2,6 +2,9 @@ package com.cesca.sensors.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 
 import com.cesca.sensors.entity.DHTSensor;
@@ -14,14 +17,19 @@ import jssc.SerialPortException;
 @Controller
 public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 
+	
+    
+	@Autowired
+	public DHTSensorService dhtSensorService;
+    
 	private SerialPort serialPort;
 	private String output = "";
 
 	private Logger log = Logger.getLogger(this.getClass());
 
-	public DHTSensorSerialMonitorService() {
+	public DHTSensorSerialMonitorService(@Value("${app.dhtsensor.reader.portName}") String portName) {
 
-		this.serialPort = new SerialPort("COM5");
+		this.serialPort = new SerialPort(portName);
 		try {
 			serialPort.openPort();
 			serialPort.setParams(9600, 8, 1, 0);// Set params.
@@ -31,9 +39,6 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 			e.printStackTrace();
 		}
 	}
-
-	@Autowired
-	public DHTSensorService dhtSensorService;
 
 	@Override
 	public void serialEvent(SerialPortEvent event) {
