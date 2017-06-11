@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,8 @@ import com.cesca.sensors.entity.DHTSensor;
 @Primary
 @Repository("PostgreSQL_DHTSensorDAO")
 public class PostgreeSQL_DHTSensorDAO implements DHTSensorDAO {
+
+	private Logger log = Logger.getLogger(this.getClass().getName());
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -46,13 +49,15 @@ public class PostgreeSQL_DHTSensorDAO implements DHTSensorDAO {
 		StringBuilder sql = new StringBuilder();
 		sql.append("INSERT INTO dht_sensor (collection_timestamp, humidity, temperature) ");
 		sql.append("VALUES (?, ?, ?) ");
-		
+
 		Timestamp collectionTimestamp = new Timestamp(dht.getCollectionTimestamp());
 		float humidity = dht.getHumidity();
 		float temperature = dht.getTemperature();
-		
-		this.jdbcTemplate.update(sql.toString(), new Object [] { collectionTimestamp, humidity, temperature });
-		
+
+		this.jdbcTemplate.update(sql.toString(), new Object[] { collectionTimestamp, humidity, temperature });
+
+		log.info("Added DHTSensor data: " + dht.getCollectionTimestamp() + " , " + humidity + ", " + temperature);
+
 		return dht;
 	}
 
