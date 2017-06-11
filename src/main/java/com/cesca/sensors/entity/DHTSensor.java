@@ -6,6 +6,16 @@ public class DHTSensor {
 	private float humidity;
 	private float temperature;
 
+	public DHTSensor(){
+
+	};
+	
+	public DHTSensor(long collectionTimeStamp, float humidity, float temperature){
+		this.collectionTimestamp = collectionTimeStamp;
+		this.humidity = humidity;
+		this.temperature = temperature;
+	}
+	
 	public long getCollectionTimestamp() {
 		return collectionTimestamp;
 	}
