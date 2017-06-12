@@ -30,13 +30,25 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 	public DHTSensorSerialMonitorService(@Value("${app.dhtsensor.reader.portName}") String portName) {
 
 		this.serialPort = new SerialPort(portName);
-		try {
-			serialPort.openPort();
-			serialPort.setParams(9600, 8, 1, 0);// Set params.
-			serialPort.addEventListener(this);// Add
-		} catch (SerialPortException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		boolean connected = false;
+		
+		while (!connected){
+			try {
+				serialPort.openPort();
+				serialPort.setParams(9600, 8, 1, 0);// Set params.
+				serialPort.addEventListener(this);// Add
+				connected = true;
+			} catch (SerialPortException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}			
 		}
 	}
 
@@ -48,23 +60,25 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 
 			try {
 				String serialOutput = this.serialPort.readString();
-				serialOutput.replaceAll("null", "");
-				this.output += serialOutput;
+				if (serialOutput != null){
+					serialOutput.replaceAll("null", "");
+					this.output += serialOutput;
 
-				String[] lines = output.split("\n\r");
-				String lineToBeProcessed = null;
+					String[] lines = output.split("\n\r");
+					String lineToBeProcessed = null;
 
-				for (String line : lines) {
-					String[] values = line.split(" ");
-					if ( (line.length() == 11) && (values.length == 2)) {
-						if (values[0].length() == values[1].length()) {
-							lineToBeProcessed = line;
-						}
-					}						
-				}
+					for (String line : lines) {
+						String[] values = line.split(" ");
+						if ( (line.length() == 11) && (values.length == 2)) {
+							if (values[0].length() == values[1].length()) {
+								lineToBeProcessed = line;
+							}
+						}						
+					}
 
-				if (lineToBeProcessed != null) {
-					this.processSerialLine(lineToBeProcessed);
+					if (lineToBeProcessed != null) {
+						this.processSerialLine(lineToBeProcessed);
+					}					
 				}
 
 			} catch (SerialPortException e) { // TODO Auto-generated catch block
