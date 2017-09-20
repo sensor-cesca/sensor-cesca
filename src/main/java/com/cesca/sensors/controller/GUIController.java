@@ -24,7 +24,7 @@ public class GUIController {
 		sb.append("<title>Sensors</title>");
 		
 		sb.append("<script>");
-		sb.append("window.setInterval(\"reloadIFrame();\", 3000);");
+		sb.append("window.setInterval(\"reloadIFrame();\", 30000);");
 		sb.append("function reloadIFrame() {");
 		sb.append("window.frames[\"fr_content\"].location.reload();");
 		sb.append("}");
