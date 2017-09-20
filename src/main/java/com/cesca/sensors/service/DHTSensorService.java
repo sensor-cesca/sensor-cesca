@@ -28,7 +28,7 @@ public class DHTSensorService {
 		html.append("<html>");
 		html.append("<head>");
 		
-		html.append("<meta http-equiv=\"refresh\" content=\"5\"/>");
+		//html.append("<meta http-equiv=\"refresh\" content=\"5\"/>");
 		
 		html.append("<title>Sensors</title>");
 		

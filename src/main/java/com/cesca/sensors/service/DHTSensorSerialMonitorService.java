@@ -17,38 +17,40 @@ import jssc.SerialPortException;
 @Controller
 public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 
-	
-    
 	@Autowired
 	public DHTSensorService dhtSensorService;
-    
+
 	private SerialPort serialPort;
 	private String output = "";
 
 	private Logger log = Logger.getLogger(this.getClass());
 
-	public DHTSensorSerialMonitorService(@Value("${app.dhtsensor.reader.portName}") String portName) {
+	public DHTSensorSerialMonitorService(@Value("${app.dhtsensor.reader.portName}") String portName,
+			@Value("${app.dhtsensor.reader.enabled}") boolean isEnabled) {
 
-		this.serialPort = new SerialPort(portName);
-		
-		boolean connected = false;
-		
-		while (!connected){
-			try {
-				serialPort.openPort();
-				serialPort.setParams(9600, 8, 1, 0);// Set params.
-				serialPort.addEventListener(this);// Add
-				connected = true;
-			} catch (SerialPortException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if (isEnabled) {
+			this.serialPort = new SerialPort(portName);
+
+			boolean connected = false;
+
+			while (!connected) {
 				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e1) {
+					serialPort.openPort();
+					serialPort.setParams(9600, 8, 1, 0);// Set params.
+					serialPort.addEventListener(this);// Add
+					connected = true;
+				} catch (SerialPortException e) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e.printStackTrace();
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-			}			
+			}
+
 		}
 	}
 
@@ -60,7 +62,7 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 
 			try {
 				String serialOutput = this.serialPort.readString();
-				if (serialOutput != null){
+				if (serialOutput != null) {
 					serialOutput.replaceAll("null", "");
 					this.output += serialOutput;
 
@@ -69,16 +71,16 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 
 					for (String line : lines) {
 						String[] values = line.split(" ");
-						if ( (line.length() == 11) && (values.length == 2)) {
+						if ((line.length() == 11) && (values.length == 2)) {
 							if (values[0].length() == values[1].length()) {
 								lineToBeProcessed = line;
 							}
-						}						
+						}
 					}
 
 					if (lineToBeProcessed != null) {
 						this.processSerialLine(lineToBeProcessed);
-					}					
+					}
 				}
 
 			} catch (SerialPortException e) { // TODO Auto-generated catch block
@@ -99,11 +101,11 @@ public class DHTSensorSerialMonitorService implements SerialPortEventListener {
 		long collectedTimeStamp = System.currentTimeMillis();
 		float humidity = Float.parseFloat(values[0] + "f");
 		float temperature = Float.parseFloat(values[1] + "f");
-		
-		if ( (humidity < 100) && (temperature < 100) ){
+
+		if ((humidity < 100) && (temperature < 100)) {
 			DHTSensor dht = new DHTSensor(collectedTimeStamp, humidity, temperature);
 
-			this.dhtSensorService.addDHTSensorData(dht);			
+			this.dhtSensorService.addDHTSensorData(dht);
 		}
 
 		this.output = "";
