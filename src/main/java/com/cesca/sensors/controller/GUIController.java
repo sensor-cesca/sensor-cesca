@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cesca.sensors.service.DHTSensorService;
 
 @RestController
-@RequestMapping("/GUI")
+@RequestMapping("/GUI2")
 public class GUIController {
 	
 	@Autowired
@@ -24,7 +24,7 @@ public class GUIController {
 		sb.append("<title>Sensors</title>");
 		
 		sb.append("<script>");
-		sb.append("window.setInterval(\"reloadIFrame();\", 30000);");
+		sb.append("window.setInterval(\"reloadIFrame();\", 3000);");
 		sb.append("function reloadIFrame() {");
 		sb.append("window.frames[\"fr_content\"].location.reload();");
 		sb.append("}");
@@ -45,7 +45,6 @@ public class GUIController {
 	
 	@RequestMapping(value = "/frame",method = RequestMethod.GET)
 	public String getFrame(){
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		return this.dhtSensorService.lastestAsHTML();
 	}
 	
